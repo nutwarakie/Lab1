@@ -91,11 +91,12 @@ int main(void) {
 	GPIO_PinState SwitchState_S1[2]; //Now/Last
 	GPIO_PinState SwitchState_S2[2]; //Now/Last
 	GPIO_PinState SwitchState_S3[2]; //Now/Last
-	uint16_t LED1_HalfPeriod = 500; //Hz
+	uint16_t LED1_HalfPeriod = 1000; //Hz
 	uint16_t LED3_HalfPeriod = 500; //Hz
 	uint16_t LED5_HalfPeriod = 500; //Hz
 	uint32_t TimeStamp = 0;
 	uint32_t ButtonTimeStamp = 0;
+	uint8_t State_S1 = 0.5;
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -114,12 +115,32 @@ int main(void) {
 
 			if (SwitchState_S1[1] == GPIO_PIN_SET
 					&& SwitchState_S1[0] == GPIO_PIN_RESET) {
+				switch(State_S1)
+				{
+				case 0.5:
+					LED1_HalfPeriod = 1000;
+					State_S1 = 1;
+					break;
+				case 1:
+					LED1_HalfPeriod =500;
+					State_S1 = 2;
+					break;
+				case 2:
+					LED1_HalfPeriod = 250;
+					State_S1 = 3;
+					break;
+				case 3:
+					LED1_HalfPeriod = 167;
+					State_S1 = 0.5;
+					break;
+				}
 
 			}
 			SwitchState_S1[1] = SwitchState_S1[0];
 
 			if (SwitchState_2[1] == GPIO_PIN_SET
 					&& SwitchState_S2[0] == GPIO_PIN_RESET) {
+
 
 			}
 			SwitchState_S2[1] = SwitchState_S2[0];
@@ -130,6 +151,30 @@ int main(void) {
 			}
 			SwitchState_S3[1] = SwitchState_S3[0];
 		}
+		if (HAL_GetTick() - TimeStamp >= LED1_HalfPeriod) {
+					TimeStamp = HAL_GetTick(); //ms
+					if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET) {
+						HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
+					} else {
+						HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
+					}
+				}
+		if (HAL_GetTick() - TimeStamp >= LED1_HalfPeriod) {
+							TimeStamp = HAL_GetTick(); //ms
+							if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET) {
+								HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
+							} else {
+								HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
+							}
+						}
+		if (HAL_GetTick() - TimeStamp >= LED1_HalfPeriod) {
+							TimeStamp = HAL_GetTick(); //ms
+							if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET) {
+								HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
+							} else {
+								HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
+							}
+						}
 	}
 	/* USER CODE END 3 */
 }
