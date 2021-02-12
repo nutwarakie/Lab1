@@ -115,14 +115,13 @@ int main(void) {
 
 			if (SwitchState_S1[1] == GPIO_PIN_SET
 					&& SwitchState_S1[0] == GPIO_PIN_RESET) {
-				switch(State_S1)
-				{
+				switch (State_S1) {
 				case 0.5:
 					LED1_HalfPeriod = 1000;
 					State_S1 = 1;
 					break;
 				case 1:
-					LED1_HalfPeriod =500;
+					LED1_HalfPeriod = 500;
 					State_S1 = 2;
 					break;
 				case 2:
@@ -140,8 +139,11 @@ int main(void) {
 
 			if (SwitchState_2[1] == GPIO_PIN_SET
 					&& SwitchState_S2[0] == GPIO_PIN_RESET) {
-
-
+				if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3) == GPIO_PIN_SET) {
+					HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_RESET);
+				} else {
+					HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
+				}
 			}
 			SwitchState_S2[1] = SwitchState_S2[0];
 
@@ -152,29 +154,22 @@ int main(void) {
 			SwitchState_S3[1] = SwitchState_S3[0];
 		}
 		if (HAL_GetTick() - TimeStamp >= LED1_HalfPeriod) {
-					TimeStamp = HAL_GetTick(); //ms
-					if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET) {
-						HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
-					} else {
-						HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
-					}
-				}
+			TimeStamp = HAL_GetTick(); //ms
+			if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET) {
+				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
+			} else {
+				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
+			}
+		}
+
 		if (HAL_GetTick() - TimeStamp >= LED1_HalfPeriod) {
-							TimeStamp = HAL_GetTick(); //ms
-							if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET) {
-								HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
-							} else {
-								HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
-							}
-						}
-		if (HAL_GetTick() - TimeStamp >= LED1_HalfPeriod) {
-							TimeStamp = HAL_GetTick(); //ms
-							if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET) {
-								HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
-							} else {
-								HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
-							}
-						}
+			TimeStamp = HAL_GetTick(); //ms
+			if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_SET) {
+				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
+			} else {
+				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
+			}
+		}
 	}
 	/* USER CODE END 3 */
 }
