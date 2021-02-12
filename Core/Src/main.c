@@ -89,8 +89,8 @@ int main(void) {
 	MX_USART2_UART_Init();
 	/* USER CODE BEGIN 2 */
 	GPIO_PinState SwitchState_S1[2]; //Now/Last
+	GPIO_PinState SwitchState_S2[2]; //Now/Last
 	GPIO_PinState SwitchState_S3[2]; //Now/Last
-	GPIO_PinState SwitchState_S5[2]; //Now/Last
 	uint16_t LED1_HalfPeriod = 500; //Hz
 	uint16_t LED3_HalfPeriod = 500; //Hz
 	uint16_t LED5_HalfPeriod = 500; //Hz
@@ -105,13 +105,31 @@ int main(void) {
 
 		/* USER CODE BEGIN 3 */
 		if (HAL_GetTick() - ButtonTimeStamp >= 100) //ms
-			{
-				ButtonTimeStamp =  HAL_GetTick();
-				//สวิตซ์แบบกดแล้วlow
-				SwitchState_S1[0]=HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
-				SwitchState_S3[0]=HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
-				SwitchState_S5[0]=HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
+				{
+			ButtonTimeStamp = HAL_GetTick();
+			//สวิตซ์แบบกดแล้วlow
+			SwitchState_S1[0] = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
+			SwitchState_S2[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3);
+			SwitchState_S3[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);
+
+			if (SwitchState_S1[1] == GPIO_PIN_SET
+					&& SwitchState_S1[0] == GPIO_PIN_RESET) {
+
 			}
+			SwitchState_S1[1] = SwitchState_S1[0];
+
+			if (SwitchState_2[1] == GPIO_PIN_SET
+					&& SwitchState_S2[0] == GPIO_PIN_RESET) {
+
+			}
+			SwitchState_S2[1] = SwitchState_S2[0];
+
+			if (SwitchState_S3[1] == GPIO_PIN_SET
+					&& SwitchState_S3[0] == GPIO_PIN_RESET) {
+
+			}
+			SwitchState_S3[1] = SwitchState_S3[0];
+		}
 	}
 	/* USER CODE END 3 */
 }
